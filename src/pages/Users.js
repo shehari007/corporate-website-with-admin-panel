@@ -1,5 +1,5 @@
 
-import { Button, Card, Space, notification } from 'antd';
+import { Button, Card, Space, notification, Typography } from 'antd';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table } from 'antd';
@@ -104,8 +104,8 @@ function Users() {
             dataIndex: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="danger" shape="round" onClick={()=> deleteData(record.id)}>Delete</Button>
-                    <Button type="success" shape='round' onClick={()=> deleteData(record.id)}>Edit</Button>
+                    <Typography.Link onClick={()=> deleteData(record.id)}>Delete</Typography.Link>
+                    <Typography.Link onClick={()=> deleteData(record.id)}>Edit</Typography.Link>
                 </Space>
                 
             ),
@@ -118,10 +118,10 @@ function Users() {
             <Card
                 bordered={false}
                 className="criclebox tablespace mb-24"
-                title={"Admins"+" : "+ users1.length}
+                title={"Admins:  " + users1.length}
                 extra={
                     <Space size="middle">
-                        <Button type='primary'href='/add new user'>Add New User</Button>
+                        <a href='/add new user'><Button type='primary'>Add New User</Button></a>
                     </Space>}
             >
                 <Table bordered columns={columns} dataSource={data} style={{ margin: "1%" }} /></Card>

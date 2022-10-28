@@ -1,7 +1,8 @@
-import { Button,Card, Space, Table, notification , Select } from 'antd';
+import { Button,Card, Space, Table, notification , Typography} from 'antd';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useReducer } from 'react';
+
 
 
   const deleteAlert = () =>{
@@ -121,8 +122,8 @@ function Allproducts() {
             dataIndex: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="danger"onClick={()=> deleteData(record.id)}>Delete</Button>
-                    <Button type="warning"onClick={()=> deleteData(record.id)}>Edit</Button>
+                    <Typography.Link onClick={()=> deleteData(record.id)}>Delete</Typography.Link>
+                    <Typography.Link onClick={()=> deleteData(record.id)}>Edit</Typography.Link>
                 </Space>
 
             ),
@@ -133,14 +134,16 @@ function Allproducts() {
 
     return (
             <>
+            
                 <Card
                     bordered={true}
                     className="criclebox tablespace mb-24"
-                    title={"All Products"+" : "+ products.length}
+                    title={"All Products:  "+ products.length}
                     extra={
                         <Space size="middle"><a href='/addproducts'><Button type='primary'>Add New Product</Button></a></Space>}
                 >
                     <Table columns={columns} dataSource={data} style={{ margin: "1%" }} bordered /></Card>
+                   
             </>
     );
 }

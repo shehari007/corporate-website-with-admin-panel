@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Select } from 'antd';
 import axios from 'axios';
 import { notification } from 'antd';
-import TextArea from 'antd/lib/input/TextArea';
-import { WindowsFilled } from '@ant-design/icons';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 const { Option } = Select;
