@@ -122,7 +122,7 @@ const alert1 = () =>{
   notification.open({
     message: 'Sign-In',
     description:
-      'Wron Email or Password try again',
+      'Wrong Email or Password, try again',
     onClick: () => {
       console.log('Notification Clicked!');
     },
@@ -189,7 +189,7 @@ export default class SignIn extends Component {
         <Layout className="layout-default layout-signin">
           <Header>
             <div className="header-col header-brand">
-              <h5>Muse Dashboard</h5>
+              <h5>Corporate Dashboard</h5>
             </div>
             <div className="header-col header-nav">
               <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
@@ -206,21 +206,21 @@ export default class SignIn extends Component {
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                  <Link to="/sign-up">
+                  <Link to="#">
                     {signup}
-                    <span> Sign Up</span>
+                    <span>Home</span>
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="4">
-                  <Link to="/sign-in">
+                  <Link to="#">
                     {signin}
-                    <span> Sign In</span>
+                    <span>About</span>
                   </Link>
                 </Menu.Item>
               </Menu>
             </div>
             <div className="header-col header-btn">
-              <Button type="primary">FREE DOWNLOAD</Button>
+              <a href="/sign-up"><Button type="primary">SIGN UP</Button></a>
             </div>
           </Header>
           <Content className="signin">
@@ -340,12 +340,12 @@ export default class SignIn extends Component {
                 </Link>
               </Menu.Item>
               <Menu.Item>
-                <Link to="#">{<GithubOutlined />}</Link>
+                <a href="https://github.com/shehari007">{<GithubOutlined />}</a>
               </Menu.Item>
             </Menu>
             <p className="copyright">
               {" "}
-              Copyright © 2021 Muse by <a href="#pablo">Creative Tim</a>.{" "}
+              Copyright © 2022 Corporate Website by <a href="#pablo">Muhammad Sheharyar Butt</a>.{" "}
             </p>
           </Footer>
         </Layout>

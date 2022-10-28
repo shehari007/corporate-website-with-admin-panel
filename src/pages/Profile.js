@@ -259,7 +259,7 @@ function Profile() {
               equality).{" "}
             </p>
             <hr className="my-25" />
-            <Descriptions title="Oliver Liam">
+            <Descriptions title="General Details">
               <Descriptions.Item label="Full Name" span={3}>
                 Sarah Emily Jacob
               </Descriptions.Item>

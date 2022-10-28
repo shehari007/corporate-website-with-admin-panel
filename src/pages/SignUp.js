@@ -1,15 +1,4 @@
-/*!
-=========================================================
-* Muse Ant Design Dashboard - v1.0.0
-=========================================================
-* Product Page: https://www.creative-tim.com/product/muse-ant-design-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/muse-ant-design-dashboard/blob/main/LICENSE.md)
-* Coded by Creative Tim
-=========================================================
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   Layout,
   Menu,
@@ -20,9 +9,6 @@ import {
   Input,
   Checkbox,
 } from "antd";
-import logo1 from "../assets/images/logos-facebook.svg";
-import logo2 from "../assets/images/logo-apple.svg";
-import logo3 from "../assets/images/Google__G__Logo.svg.png";
 import { notification } from 'antd';
 import { Link } from "react-router-dom";
 import {
@@ -115,7 +101,10 @@ const signin = [
   </svg>,
 ];
 export default class SignUp extends Component {
+  
   render() {
+    
+   
     const onFinish = (values) => {
       console.log("Success:", values);
     };
@@ -146,6 +135,74 @@ export default class SignUp extends Component {
         },
       });
     }
+
+    const alert3 = () =>{
+      notification.open({
+        message: 'Sign-Up',
+        description:
+          'Account already exists with your email address, Please try loggin in',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    }
+    const alert4 = () =>{
+      notification.open({
+        message: 'Sign-Up',
+        description:
+          'Please accept the Terms and Conditions',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    }
+    const alert5 = () =>{
+      notification.open({
+        message: 'Sign-Up',
+        description:
+          'Please fill out the form below',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    }
+    
+    const HandleCheck = () => {
+      if(checked===false) {alert4();}
+      else{
+      var axios = require('axios');
+  
+      var data = JSON.stringify({
+        "action": "signupCheck",
+        "parameters": {
+          "email": document.getElementById('email').value,
+        }
+      });
+      
+      var config = {
+        method: 'post',
+        url: 'http://localhost:5000/index',
+        headers: { 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(response.data[0]);
+        alert3();
+        // if(response.data===true){
+        //   alert3();
+        //   //window.location.replace('/sign-in');
+        // }else{
+        //  alert2();
+        // }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }}
 
     const HandleSubmit = () => {
       var axios = require('axios');
@@ -185,12 +242,18 @@ export default class SignUp extends Component {
         console.log(error);
       });
     }
+    var checked;
+    const onCheckbox = (e) => {
+      checked = e.target.checked;
+      //console.log();
+    };
+
     return (
       <>
         <div className="layout-default ant-layout layout-sign-up">
           <Header>
             <div className="header-col header-brand">
-              <h5>Muse Dashboard</h5>
+              <h5>Corporate Dashboard</h5>
             </div>
             <div className="header-col header-nav">
               <Menu mode="horizontal" defaultSelectedKeys={["1"]}>
@@ -207,21 +270,21 @@ export default class SignUp extends Component {
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                  <Link to="/sign-up">
+                  <Link to="#">
                     {signup}
-                    <span> Sign Up</span>
+                    <span> Home</span>
                   </Link>
                 </Menu.Item>
                 <Menu.Item key="4">
-                  <Link to="/sign-in">
+                  <Link to="#">
                     {signin}
-                    <span> Sign In</span>
+                    <span> About</span>
                   </Link>
                 </Menu.Item>
               </Menu>
             </div>
             <div className="header-col header-btn">
-              <Button type="false">FREE DOWNLOAD</Button>
+              <a href="sign-in"><Button type="false">SIGN IN</Button></a>
             </div>
           </Header>
 
@@ -229,30 +292,14 @@ export default class SignUp extends Component {
             <div className="sign-up-header">
               <div className="content">
                 <Title>Sign Up</Title>
-                <p className="text-lg">
-                  Use these awesome forms to login or create new account in your
-                  project for free.
-                </p>
               </div>
             </div>
 
             <Card
               className="card-signup header-solid h-full ant-card pt-0"
-              title={<h5>Register With</h5>}
+              title={<h5>Fill up the form..</h5>}
               bordered="false"
             >
-              <div className="sign-up-gateways">
-                <Button type="false">
-                  <img src={logo1} alt="logo 1" />
-                </Button>
-                <Button type="false">
-                  <img src={logo2} alt="logo 2" />
-                </Button>
-                <Button type="false">
-                  <img src={logo3} alt="logo 3" />
-                </Button>
-              </div>
-              <p className="text-center my-25 font-semibold text-muted">Or</p>
               <Form
                 name="basic"
                 initialValues={{ remember: true }}
@@ -311,7 +358,7 @@ export default class SignUp extends Component {
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked">
-                  <Checkbox>
+                  <Checkbox onChange={onCheckbox}>
                     I agree the{" "}
                     <a href="#pablo" className="font-bold text-dark">
                       Terms and Conditions
@@ -323,7 +370,7 @@ export default class SignUp extends Component {
                   <Button
                     style={{ width: "100%" }}
                     type="primary"
-                    onClick={()=>HandleSubmit()}
+                    onClick={()=>HandleCheck()}
                   >
                     SIGN UP
                   </Button>
@@ -369,12 +416,12 @@ export default class SignUp extends Component {
                 </Link>
               </Menu.Item>
               <Menu.Item>
-                <Link to="#">{<GithubOutlined />}</Link>
+              <a href="https://github.com/shehari007">{<GithubOutlined />}</a>
               </Menu.Item>
             </Menu>
             <p className="copyright">
               {" "}
-              Copyright © 2021 Muse by <a href="#pablo">Creative Tim</a>.{" "}
+              Copyright © 2021 Corporate Website by <a href="#pablo">Muhammad Sheharyar Butt</a>.{" "}
             </p>
           </Footer>
         </div>
