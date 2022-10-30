@@ -9,7 +9,7 @@ module.exports = {
             reject(err);
           }
           else{
-          let sql = `SELECT * FROM products`;
+          let sql = `SELECT * FROM products ORDER BY id DESC`;
           connection.query(sql, function(err, rows){
               if(err){
                   console.log(`FAILED: ${err}`)
