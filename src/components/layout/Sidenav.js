@@ -151,6 +151,7 @@ function Sidenav({ color }) {
       </div>
       <hr />
       <Menu theme="light" mode="inline">
+       
         <Menu.Item key="1">
           <NavLink to="/dashboard">
             <span
