@@ -13,6 +13,7 @@ import Addproducts from "./pages/Addproducts";
 import Users from "./pages/Users";
 import secureLocalStorage from "react-secure-storage";
 import Allproducts from "./pages/Allproducts";
+import Categories from "./pages/Categories";
 
 
 
@@ -33,7 +34,7 @@ function App() {
           <Route exact path="/users" component={Users} />
           <Route exact path="/products" component={Allproducts} />
           <Route exact path="/addproducts" component={Addproducts} />
-        
+          <Route exact path="/categories" component={Categories} />
           
         </Main>: <Redirect to = "/sign-in"/>}
       </Switch>

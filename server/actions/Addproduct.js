@@ -12,7 +12,7 @@ module.exports = {
           }
           else{
             let desc = escape(`${parameters.prod_desc}`)
-          let sql = `INSERT INTO products (prod_name, prod_desc, prod_cat, prod_feat) values (${connection.escape(parameters.prod_name)}, ${connection.escape(parameters.prod_desc)}, '${parameters.prod_cat}', '${parameters.prod_feat}')`;
+          let sql = `INSERT INTO products (prod_name, prod_desc, prod_cat, prod_feat, metatitle, metadesc) values (${connection.escape(parameters.prod_name)}, ${connection.escape(parameters.prod_desc)}, '${parameters.prod_cat}', '${parameters.prod_feat}', ${connection.escape(parameters.metatitle)}, ${connection.escape(parameters.metadesc)})`;
           connection.query(sql, function(err, rows){
               if(err){
                   console.log(`FAILED: ${err}`)
