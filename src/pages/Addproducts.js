@@ -82,7 +82,9 @@ function Addproducts() {
                 "prod_name": document.getElementById("title").value,
                 "prod_desc": TextArea===''?"No Description Availabe": TextArea,
                 "prod_cat": select,
-                "prod_feat": checkbox
+                "prod_feat": checkbox,
+                "metatitle": document.getElementById("metatitle").value = null? document.getElementById("title").value:document.getElementById("metatitle").value,
+                "metadesc": document.getElementById("metadesc").value = null? TextArea: document.getElementById("metadesc").value
             }
         });
 
@@ -160,6 +162,28 @@ function Addproducts() {
                     <Form.Item>
                         <Button type="primary" onClick={addProduct}>Submit</Button>
                     </Form.Item>
+                </Form></Card>
+
+                <Card
+                bordered={false}
+                className="criclebox tablespace mb-24"
+                title="SEO Details"
+            >
+                <Form
+                    layout="vertical"
+                    style={{ margin: "1%" }}
+                >
+                    <Form.Item label="SEO Meta Title"
+                    name="SEO Meta Title"
+                    >
+                        <Input placeholder="Write the meta title of the product" name="metatitle" id="metatitle" />
+                    </Form.Item>
+                    <Form.Item label="SEO Meta Description"
+                    name="SEO Meta Description"
+                    >
+                        <Input placeholder="Write the meta description of the product" name="metadesc" id="metadesc" />
+                    </Form.Item>
+                    
                 </Form></Card>
         </>
     );

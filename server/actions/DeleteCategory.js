@@ -1,6 +1,6 @@
 module.exports = {
   
-    foo:  function () {
+    foo:  function (parameters) {
       return new Promise(function(resolve,reject){
         var cfg = require('../config');
         cfg.config().getConnection((err, connection) => {
@@ -9,7 +9,7 @@ module.exports = {
             reject(err);
           }
           else{
-          let sql = `SELECT * FROM products ORDER BY id DESC`;
+          let sql = `DELETE FROM category WHERE id= '${parameters.id}'`;
           connection.query(sql, function(err, rows){
               if(err){
                   console.log(`FAILED: ${err}`)
@@ -17,7 +17,7 @@ module.exports = {
               }
               else
               {
-                  console.log('Product Deleted Successfully');
+                  console.log("category deleted successfully");
                   resolve (rows);
               }
           });

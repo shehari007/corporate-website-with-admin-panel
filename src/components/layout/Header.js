@@ -374,7 +374,7 @@ function Header({
 
                 <div className="sidebarnav-color mb-2">
                   <Title level={5}>Sidenav Type</Title>
-                  <Text>Choose between 2 different sidenav types.</Text>
+                  <Text>Choose between 3 different sidenav types.</Text>
                   <ButtonContainer className="trans">
                     <Button
                       type={sidenavType === "transparent" ? "primary" : "white"}
@@ -394,13 +394,22 @@ function Header({
                     >
                       WHITE
                     </Button>
+                    <Button
+                      type={sidenavType === "blue" ? "primary" : "white"}
+                      onClick={() => {
+                        handleSidenavType("#0096FF");
+                        setSidenavType("blue");
+                      }}
+                    >
+                      BLUE
+                    </Button>
                   </ButtonContainer>
                 </div>
                 <div className="fixed-nav mb-2">
                   <Title level={5}>Navbar Fixed </Title>
                   <Switch onChange={(e) => handleFixedNavbar(e)} />
                 </div>
-                <div className="ant-docment">
+                {/* <div className="ant-docment">
                   <ButtonContainer>
                     <Button type="black" size="large">
                       FREE DOWNLOAD
@@ -421,7 +430,7 @@ function Header({
                     <Button type="black">{<TwitterOutlined />}TWEET</Button>
                     <Button type="black">{<FacebookFilled />}SHARE</Button>
                   </ButtonContainer>
-                </div>
+                </div> */}
               </div>
             </div>
           </Drawer>

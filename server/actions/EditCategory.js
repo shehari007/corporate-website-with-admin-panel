@@ -1,6 +1,6 @@
 module.exports = {
   
-    foo:  function () {
+    foo:  function (parameters) {
       return new Promise(function(resolve,reject){
         var cfg = require('../config');
         cfg.config().getConnection((err, connection) => {
@@ -9,20 +9,20 @@ module.exports = {
             reject(err);
           }
           else{
-          let sql = `SELECT * FROM products ORDER BY id DESC`;
-          connection.query(sql, function(err, rows){
+          let sql = `UPDATE category SET name= '${parameters.name}', status= '${parameters.status}' WHERE id = '${parameters.id}'`;
+          connection.query(sql, function(err, result){
               if(err){
                   console.log(`FAILED: ${err}`)
                   reject(err);
               }
               else
               {
-                  console.log('Product Deleted Successfully');
-                  resolve (rows);
+                  console.log('UPDATED successfully');
+                  resolve(result.protocol41);
               }
           });
         }
         }) 
     }
   )}
-}
+  }
