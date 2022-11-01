@@ -1,5 +1,7 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useReducer } from 'react';
+import axios from "axios";
 
 import {
   Row,
@@ -13,6 +15,7 @@ import {
   Switch,
   Upload,
   message,
+  Modal, Form, Input, notification
 } from "antd";
 
 import {
@@ -33,10 +36,131 @@ import project1 from "../assets/images/home-decor-1.jpeg";
 import project2 from "../assets/images/home-decor-2.jpeg";
 import project3 from "../assets/images/home-decor-3.jpeg";
 import secureLocalStorage from "react-secure-storage";
+import TextArea from "antd/lib/input/TextArea";
+
+const profileupdatedAlert = () =>{
+  notification.open({
+    message: 'Profile Info',
+    description:
+      'Profile Info Updated Successfully',
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
+}
+const profileupdatedErrorAlert = () =>{
+  notification.open({
+    message: 'Profile Info',
+    description:
+      'System Error please try later..',
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
+}
 
 function Profile() {
+
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const [imageURL, setImageURL] = useState(false);
   const [, setLoading] = useState(false);
+  const [details, setDetails] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [bio, setBio] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [number, setNumber] = useState('');
+  const [loc, setLocation] = useState('');
+  const [fb, setFBLink] = useState('');
+  const [inst, setINSTLink] = useState('');
+  const [twit, setTWITLink] = useState('');
+
+  const setDATA = () => {
+    details.map((data) => {
+      return <>
+        {setTitle(data.title)}
+        {setBio(data.bio)}
+        {setFirstname(data.firstname)}
+        {setLastname(data.lastname)}
+        {setNumber(data.number)}
+        {setLocation(data.location)}
+        {setFBLink(data.social_fb)}
+        {setINSTLink(data.social_inst)}
+        {setTWITLink(data.social_twit)}
+      </>
+    })
+    setIsEditModalOpen(true);
+  }
+  const handleCancel = () => {
+
+    setIsEditModalOpen(false);
+
+  };
+
+  const handleOkEdit = () => {
+    var name = secureLocalStorage.getItem('username');
+    var axios = require('axios');
+
+    var data = JSON.stringify({
+      "action": "editProfileInfo",
+      "parameters": {
+        "username": name,
+        "firstname": firstname,
+        "lastname": lastname,
+        "title": title,
+        "bio": bio,
+        "location": loc,
+        "number": number,
+        "fb": fb,
+        "inst": inst,
+        "twit": twit
+      }
+    });
+
+    var config = {
+      method: 'post',
+      url: 'http://localhost:5000/index',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response);
+        if (response.data === true) {
+          profileupdatedAlert();
+          setIsEditModalOpen(false);
+          forceUpdate();
+          //window.location.replace('/sign-in');
+        } else {
+          profileupdatedErrorAlert();
+          setIsEditModalOpen(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  };
+
+  useEffect(() => {
+    var name = secureLocalStorage.getItem('username');
+    const getData = async () => {
+      const res = await axios.post(`http://localhost:5000/index`, {
+        action: "userDetails",
+        parameters: {
+          username: name
+        }
+      });
+      console.log(res.data);
+      setDetails(res.data);
+      //console.log(details.bio);
+    };
+    getData();
+  }, [ignored]);
 
   const getBase64 = (img, callback) => {
     const reader = new FileReader();
@@ -166,7 +290,7 @@ function Profile() {
 
                 <div className="avatar-info">
                   <h4 className="font-semibold m-0">{secureLocalStorage.getItem('username')}</h4>
-                  <p>CEO / Co-Founder</p>
+                  <p>{details.map((data) => { return <>{data.title === '' ? "No title found" : data.title}</> })}</p>
                 </div>
               </Avatar.Group>
             </Col>
@@ -238,41 +362,49 @@ function Profile() {
             bordered={false}
             title={<h6 className="font-semibold m-0">Profile Information</h6>}
             className="header-solid h-full card-profile-information"
-            extra={<Button type="link">{pencil}</Button>}
+            extra={<Button type="link" onClick={()=>setDATA()}>{pencil}</Button>}
             bodyStyle={{ paddingTop: 0, paddingBottom: 16 }}
           >
             <p className="text-dark">
               {" "}
-              Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer
-              is no. If two equally difficult paths, choose the one more painful
-              in the short term (pain avoidance is creating an illusion of
-              equality).{" "}
+              {details.map((data) => { return <>{data.bio === "" ? "Write about yourself?" : data.bio}</> })}
+              {" "}
             </p>
             <hr className="my-25" />
             <Descriptions title="General Details">
               <Descriptions.Item label="Full Name" span={3}>
-                Sarah Emily Jacob
+                {details.map((data) => { return <>{data.firstname + " " + data.lastname}</> })}
               </Descriptions.Item>
               <Descriptions.Item label="Mobile" span={3}>
-                (44) 123 1234 123
+                {details.map((data) => { return <>{data.number === "" ? "--------------" : data.number}</> })}
               </Descriptions.Item>
               <Descriptions.Item label="Email" span={3}>
-                {secureLocalStorage.getItem('email')}
+                {details.map((data) => { return <>{data.email}</> })}
               </Descriptions.Item>
               <Descriptions.Item label="Location" span={3}>
-                USA
+                {details.map((data) => { return <>{data.location === "" ? "--------------" : data.location}</> })}
               </Descriptions.Item>
               <Descriptions.Item label="Social" span={3}>
-                <a href="#pablo" className="mx-5 px-5">
-                  {<TwitterOutlined />}
-                </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {<FacebookOutlined style={{ color: "#344e86" }} />}
-                </a>
-                <a href="#pablo" className="mx-5 px-5">
-                  {<InstagramOutlined style={{ color: "#e1306c" }} />}
-                </a>
+                {details.map((data) => {
+                  return <>{data.social_twit === "" ? null :
+                    <a href={data.social_twit} className="mx-5 px-5">
+                      {<TwitterOutlined />}
+                    </a>}</>
+                })}
+                {details.map((data) => {
+                  return <>{data.social_fb === "" ? null :
+                    <a href={data.social_fb} className="mx-5 px-5">
+                      {<FacebookOutlined style={{ color: "#344e86" }} />}
+                    </a>}</>
+                })}
+                {details.map((data) => {
+                  return <>{data.social_inst === "" ? null :
+                    <a href={data.social_inst} className="mx-5 px-5">
+                      {<InstagramOutlined style={{ color: "#e1306c" }} />}
+                    </a>}</>
+                })}
               </Descriptions.Item>
+
             </Descriptions>
           </Card>
         </Col>
@@ -359,6 +491,110 @@ function Profile() {
           </Col>
         </Row>
       </Card>
+
+      <Modal title="Profile Information" visible={isEditModalOpen} onOk={handleOkEdit} onCancel={handleCancel} okText="Update"width={1000} centered>
+        <Form
+          name="basic"
+          initialValues={{ remember: false }}
+          className="row-col"
+          layout="vertical"
+          fields={[
+            {
+              name: "title",
+              value: title
+            },
+            {
+              name: "bio",
+              value: bio
+            },
+            {
+              name: "firstname",
+              value: firstname
+            },
+            {
+              name: "lastname",
+              value: lastname
+            },
+            {
+              name: "number",
+              value: number
+            },
+            {
+              name: "location",
+              value: loc
+            },
+            {
+              name: "fb",
+              value: fb
+            },
+            {
+              name: "inst",
+              value: inst
+            },
+            {
+              name: "twit",
+              value: twit
+            }
+          ]}
+        >
+          <Form.Item
+            name="title"
+            label="Occupation Title"
+          >
+            <Input placeholder="Enter occupation title" id="title" onChange={(e) => setTitle(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            name="bio"
+            label="Your bio"
+          >
+            <TextArea placeholder="Write your bio" id="bio" onChange={(e) => setBio(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            name="firstname"
+            label="FirstName"
+          >
+            <Input placeholder="Enter Firstname" id="firstname" onChange={(e) => setFirstname(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            name="lastname"
+            label="Lastname"
+          >
+            <Input placeholder="Enter Lastname" id="lastname" onChange={(e) => setLastname(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="Number"
+            name="number"
+          >
+            <Input placeholder="Enter Number" id="number" onChange={(e) => setNumber(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="Location"
+            name="location"
+          >
+            <Input placeholder="Enter Location" id="location" onChange={(e) => setLocation(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="FB Profile Link"
+            name="fb"
+          >
+            <Input placeholder="Enter facebook profile link" id="fblink" onChange={(e) => setFBLink(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="Insta Profile Link"
+            name="inst"
+          >
+            <Input placeholder="Enter insta profile link" id="instlink" onChange={(e) => setINSTLink(e.target.value)} />
+          </Form.Item>
+          <Form.Item
+            label="Twitter Profile Link"
+            name="twit"
+          >
+            <Input placeholder="Enter twitter profile link" id="twitlink" onChange={(e) => setTWITLink(e.target.value)} />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+
     </>
   );
 }
