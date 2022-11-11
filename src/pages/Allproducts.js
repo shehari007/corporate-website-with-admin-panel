@@ -122,8 +122,8 @@ function Allproducts() {
             dataIndex: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Typography.Link onClick={()=> deleteData(record.id)}>Delete</Typography.Link>
-                    <Typography.Link onClick={()=> deleteData(record.id)}>Edit</Typography.Link>
+                    <Button type='primary' danger onClick={()=> deleteData(record.id)}>Delete</Button>
+                    <Button type='primary' onClick={()=> deleteData(record.id)}>Edit</Button>
                 </Space>
 
             ),
@@ -138,7 +138,7 @@ function Allproducts() {
                 <Card
                     bordered={true}
                     className="criclebox tablespace mb-24"
-                    title={"All Products:  "+ products.length}
+                    title={"Total Products:  "+ products.length}
                     extra={
                         <Space size="middle"><a href='/addproducts'><Button type='primary'>Add New Product</Button></a></Space>}
                 >

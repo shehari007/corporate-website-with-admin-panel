@@ -50,7 +50,13 @@ const editAlert = () => {
     });
 }
 
+
+
 function Categories() {
+
+    function timeout(delay) {
+        return new Promise( res => setTimeout(res, delay) );
+    }
 
 
     const [cat, setCat] = useState([]);
@@ -59,6 +65,9 @@ function Categories() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [select, setSelect] = useState('');
     const [newSelect, setNewSelect] = useState('');
+    useEffect(() => {
+        //console.log(newSelect);
+      }, [newSelect]);
     const [catname, setCatName] = useState('');
     const [ID, setID] = useState('');
 
@@ -71,12 +80,24 @@ function Categories() {
         getData();
     }, [ignored]);
 
-    const setData = (data) =>{
+    const setData = async (data) => {
+        console.log(data);
         let{id, name, status} = data;
+
         setID(id);
         setCatName(name);
         setNewSelect(status);
+        
+        
+        //setNewSelect(preSta)
+        //setNewSelect(prevsetNewSelect => (prevsetNewSelect, status));
+        
+        
+        //await timeout(1000);
+        console.log(newSelect);
         setIsEditModalOpen(true);
+        
+        
     }
 
     const deleteData = async (id) => {
@@ -109,6 +130,42 @@ function Categories() {
             });
     };
 
+
+    const test = async (id) => {
+        var axios = require('axios');
+
+        var data = JSON.stringify({
+            "action": "getstatus",
+            "parameters": {
+                "id": id,
+            }
+        });
+
+        var config = {
+            method: 'post',
+            url: 'http://localhost:5000/index',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+
+        axios(config)
+            .then(async function (response) {
+                 console.log(response.data[0]['status']);
+                // deleteAlert();
+                // forceUpdate();
+                //setNewSelect(response)
+                setNewSelect(response.data[0]['status']);
+                setIsEditModalOpen(true);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+
+
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -116,6 +173,9 @@ function Categories() {
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsEditModalOpen(false);
+        
+        
+        
 
     };
 
@@ -197,6 +257,7 @@ function Categories() {
                     editAlert();
                     setIsEditModalOpen(false);
                     forceUpdate();
+                    
                 } else {
                     errorAlert();
                     setIsModalOpen(false);
@@ -224,8 +285,8 @@ function Categories() {
             dataIndex: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <Typography.Link onClick={() => deleteData(record.id)}>Delete</Typography.Link>
-                    <Typography.Link onClick={() => setData(record)}>Edit</Typography.Link>
+                    <Button type='primary' danger onClick={() => deleteData(record.id)}>Delete</Button>
+                    <Button type='primary' onClick={() => test(record.id)}>Edit</Button>
                 </Space>
 
             ),
@@ -304,20 +365,41 @@ function Categories() {
                     </Form.Item>
                     <Form.Item label="Status"
                         name="status"
+                        initialValue= {{
+                            value: newSelect}}
                     >
                         <Select
                             labelInValue
+                           
+                            //value={newSelect}
+                            // defaultValue={{
+                            //     value: newSelect,
+                            //     label: newSelect,
+                            // }}
+                            
+                            onChange={handleChangeEditSelect}
+                        >
+                            {/* <Option value="">new select</Option> */}
+                            <Select.Option value="notApproved">notApproved</Select.Option>
+                            <Select.Option value="Approved">Approved</Select.Option>
+                        </Select>
+                    </Form.Item>
+                </Form>
+                <Select
+                            labelInValue
+                           
+                            //value={newSelect}
                             defaultValue={{
                                 value: newSelect,
                                 label: newSelect,
                             }}
+                            
                             onChange={handleChangeEditSelect}
                         >
-                            <Option value="Approved">Approved</Option>
-                            <Option value="notApproved">notApproved</Option>
+                            {/* <Option value="">new select</Option> */}
+                            <Select.Option value="notApproved">notApproved</Select.Option>
+                            <Select.Option value="Approved">Approved</Select.Option>
                         </Select>
-                    </Form.Item>
-                </Form>
             </Modal>
 
         </>

@@ -14,6 +14,7 @@ import Users from "./pages/Users";
 import secureLocalStorage from "react-secure-storage";
 import Allproducts from "./pages/Allproducts";
 import Categories from "./pages/Categories";
+import './App.css'
 
 
 

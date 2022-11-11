@@ -9,7 +9,7 @@ module.exports = {
             reject(err);
           }
           else{
-          let sql = ` SELECT COUNT(id) as count FROM userInfo WHERE email = '${parameters.email}'`;
+          let sql = `SELECT status FROM category WHERE id= '${parameters.id}'`;
           connection.query(sql, function(err, rows){
               if(err){
                   console.log(`FAILED: ${err}`)
@@ -17,11 +17,8 @@ module.exports = {
               }
               else
               {
-                  //console.log('Product Deleted Successfully');
-                  console.log(typeof(rows));
-                  var data = JSON.parse(JSON.stringify(rows));
-                  //console.log({data[0]['count']});
-                  resolve (true);
+                  console.log(rows);
+                  resolve (rows);
               }
           });
         }
