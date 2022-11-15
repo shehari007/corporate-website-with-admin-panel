@@ -87,16 +87,8 @@ function Categories() {
         setID(id);
         setCatName(name);
         setNewSelect(status);
-        
-        
-        //setNewSelect(preSta)
-        //setNewSelect(prevsetNewSelect => (prevsetNewSelect, status));
-        
-        
-        //await timeout(1000);
         console.log(newSelect);
         setIsEditModalOpen(true);
-        
         
     }
 
@@ -129,43 +121,7 @@ function Categories() {
                 console.log(error);
             });
     };
-
-
-    const test = async (id) => {
-        var axios = require('axios');
-
-        var data = JSON.stringify({
-            "action": "getstatus",
-            "parameters": {
-                "id": id,
-            }
-        });
-
-        var config = {
-            method: 'post',
-            url: 'http://localhost:5000/index',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: data
-        };
-
-        axios(config)
-            .then(async function (response) {
-                 console.log(response.data[0]['status']);
-                // deleteAlert();
-                // forceUpdate();
-                //setNewSelect(response)
-                setNewSelect(response.data[0]['status']);
-                setIsEditModalOpen(true);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-
-
-
+    
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -286,7 +242,7 @@ function Categories() {
             render: (_, record) => (
                 <Space size="middle">
                     <Button type='primary' danger onClick={() => deleteData(record.id)}>Delete</Button>
-                    <Button type='primary' onClick={() => test(record.id)}>Edit</Button>
+                    <Button type='primary' onClick={() => setData(record)}>Edit</Button>
                 </Space>
 
             ),
@@ -370,16 +326,8 @@ function Categories() {
                     >
                         <Select
                             labelInValue
-                           
-                            //value={newSelect}
-                            // defaultValue={{
-                            //     value: newSelect,
-                            //     label: newSelect,
-                            // }}
-                            
                             onChange={handleChangeEditSelect}
                         >
-                            {/* <Option value="">new select</Option> */}
                             <Select.Option value="notApproved">notApproved</Select.Option>
                             <Select.Option value="Approved">Approved</Select.Option>
                         </Select>
